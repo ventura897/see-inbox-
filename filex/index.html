@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Welcome Page</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: #ffffff;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding-top: 100px;
+    }
+
+    label {
+      font-size: 18px;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .input-group {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    input[type="text"], input[type="number"] {
+      padding: 10px;
+      font-size: 16px;
+      width: 120px;
+      border-radius: 5px;
+      border: none;
+      text-align: center;
+      border: 2px solid transparent;
+      transition: border-color 0.3s ease;
+    }
+
+    input#name {
+      width: 250px;
+      text-align: left;
+      padding-left: 15px;
+    }
+
+    input.error {
+      border-color: red;
+      animation: shake 0.3s;
+    }
+
+    .button-group {
+      margin-top: 20px;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin: 10px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .no-btn {
+      background-color: #555;
+      color: #ccc;
+    }
+
+    .yes-btn {
+      background-color: #e63946;
+      color: white;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      color: #ffcc70;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-5px); }
+      40%, 80% { transform: translateX(5px); }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Inbox</h1>
+
+  <label for="name">Enter your name:</label>
+  <input type="text" id="name" placeholder="Your name..." autocomplete="off" />
+
+  <label for="month">Enter your birth month, day, and year:</label>
+  <div class="input-group">
+    <input type="text" id="month" placeholder="Month (e.g. June)" autocomplete="off" />
+    <input type="number" id="day" placeholder="Day (e.g. 2)" min="1" max="31" />
+    <input type="number" id="year" placeholder="Year (e.g. 2004)" min="1900" max="2100" />
+  </div>
+
+  <p>Do you want to read a missing page message?</p>
+
+  <div class="button-group">
+    <button class="no-btn" onclick="alert('Okay, maybe this reason is invalid take care of yourself anyway ')">NO</button>
+    <button class="yes-btn" onclick="validateAndGo()">I'M INTERESTED</button>
+  </div>
+
+  <script>
+    function validateAndGo() {
+      const nameInput = document.getElementById('name');
+      const monthInput = document.getElementById('month');
+      const dayInput = document.getElementById('day');
+      const yearInput = document.getElementById('year');
+
+      const name = nameInput.value.trim();
+      const month = monthInput.value.trim().toLowerCase();
+      const day = parseInt(dayInput.value, 10);
+      const year = parseInt(yearInput.value, 10);
+
+      const months = [
+        'january', 'february', 'march', 'april', 'may', 'june',
+        'july', 'august', 'september', 'october', 'november', 'december'
+      ];
+
+      const daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+      if (!name) {
+        showError(nameInput);
+        return;
+      }
+
+      const monthIndex = months.indexOf(month);
+      if (monthIndex === -1) {
+        showError(monthInput);
+        return;
+      }
+
+      if (isNaN(day) || day < 1 || day > daysInMonth[monthIndex]) {
+        showError(dayInput);
+        return;
+      }
+
+      if (year !== 2004) {
+        showError(yearInput);
+        return;
+      }
+
+      if (!(month === 'june' && day === 2 && year === 2004)) {
+        showError(monthInput);
+        showError(dayInput);
+        showError(yearInput);
+        return;
+      }
+
+      window.location.href = "message.html";
+    }
+
+    function showError(input) {
+      input.classList.add('error');
+      input.value = '';
+      input.focus();
+      setTimeout(() => input.classList.remove('error'), 500);
+    }
+  </script>
+
+</body>
+</html>
